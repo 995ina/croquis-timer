@@ -40,7 +40,8 @@ main{flex:1;min-height:0;display:flex;flex-direction:column;padding:14px 18px 12
 .overlay-timer{position:absolute;right:14px;top:13px;width:154px;height:154px;background:rgba(255,255,255,.93);backdrop-filter:blur(8px);border-radius:50%;box-shadow:0 2px 14px rgba(0,0,0,.12);display:grid;place-items:center;pointer-events:none}
 .overlay-timer svg{display:block;width:100%;height:100%}
 .timer-track{fill:none;stroke:#d9e2e9;stroke-width:10}
-.timer-progress{fill:none;stroke:#3881c6;stroke-width:10;stroke-linecap:round;transform:rotate(-90deg);transform-origin:80px 80px;transition:stroke-dashoffset .1s linear}
+.timer-progress{fill:none;stroke:#3881c6;stroke-width:10;stroke-linecap:round;transform:rotate(-90deg);transform-origin:80px 80px;transition:stroke-dashoffset .1s linear,stroke .18s ease}
+.timer-progress.warning{stroke:#e53935}
 .timer-time{font-size:29px;font-weight:700;letter-spacing:-.8px;fill:#202124;font-variant-numeric:tabular-nums}
 .timer-caption{font-size:11px;fill:#69737c}
 .timer-tick{stroke:#8d99a3;stroke-width:1.8}
@@ -102,7 +103,7 @@ button{min-height:42px}
 </head>
 <body>
 <header>
-  <div><span class="brand">CROQUIS TIMER</span><span class="subbrand">ver.1.9</span></div>
+  <div><span class="brand">CROQUIS TIMER</span><span class="subbrand">ver.1.10</span></div>
   <div class="header-actions">
     <input class="file-input" id="files" type="file" accept="image/*" multiple>
     <button id="fileButton">画像を選択</button>
@@ -171,6 +172,9 @@ button{min-height:42px}
    $('timer').setAttribute('aria-label','残り時間 '+display);
    const ratio=duration>0?Math.max(0,Math.min(1,remaining/duration)):0;
    $('timerProgress').setAttribute('stroke-dashoffset',String(100*(1-ratio)));
+   // Only sessions longer than 10 seconds show the final-ten-second red warning.
+   // Use the displayed integer second so the warning starts at exactly 00:10.
+   $('timerProgress').classList.toggle('warning',duration>10 && remaining>0 && Math.ceil(remaining)<=10);
  }
  function makeOrder(){
    order=images.map((_,i)=>i);

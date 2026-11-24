@@ -1,4 +1,4 @@
-const CACHE = 'croquis-timer-v1.9.0';
+const CACHE = 'croquis-timer-v1.10.0';
 const APP_FILES = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(APP_FILES)).then(() => self.skipWaiting()));
